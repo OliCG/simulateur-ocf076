@@ -366,7 +366,7 @@
     };
 
     // 2. Déroulement
-    const rows = [[H("N°"), H("Séquence"), H("Organisation prévue"), H("Durée prévue"), { text: ["Durée réalisée\n", { text: "1er passage + débriefing automatique + 2e passage", fontSize: 7, bold: false }], style: "th" }]];
+    const rows = [[H("N°"), H("Séquence"), H("Organisation prévue"), H("Durée prévue"), { text: ["Durée réalisée\n", { text: "1er passage, débriefing, 2e passage", fontSize: 7, bold: false }], style: "th" }]];
     let totReal = 0;
     SEQUENCES.forEach((q) => {
       if (q.n.startsWith("D")) {
@@ -382,8 +382,9 @@
       rows.push([C(q.n), q.titre, q.org, C(q.prevu + " min"), C(dr)]);
     });
     const debTot = (S.debrief[0] || 0) + (S.debrief[1] || 0);
+    const tot = totReal + debTot;
     rows.push([C(""), { text: "Total", bold: true }, "", C("190 min – 3 h 10", { bold: true }),
-      { text: [{ text: `${totReal} min sur simulateur\n`, bold: true }, { text: `(${P.total || "?"} selon le logiciel)\n`, fontSize: 7 }, { text: `+ ${debTot} min de débriefing`, bold: true }], alignment: "center" }]);
+      C(`${tot} min – ${Math.floor(tot / 60)} h ${String(tot % 60).padStart(2, "0")}`, { bold: true })]);
 
     // 3. Consommation
     const cr = [[H("Séquence"), H("Objectif"), H("1er passage"), H("2e passage"), H("Écart entre passages"), H("Écart à l'objectif (2e)")]];
