@@ -366,7 +366,7 @@
     };
 
     // 2. Déroulement
-    const rows = [[H("N°"), H("Séquence"), { text: ["Organisation prévue\n", { text: "1er passage + débriefing automatique + 2e passage", fontSize: 7, bold: false }], style: "th" }, H("Durée prévue"), H("Durée réalisée")]];
+    const rows = [[H("N°"), H("Séquence"), H("Organisation prévue"), H("Durée prévue"), { text: ["Durée réalisée\n", { text: "1er passage + débriefing automatique + 2e passage", fontSize: 7, bold: false }], style: "th" }]];
     let totReal = 0;
     SEQUENCES.forEach((q) => {
       if (q.n.startsWith("D")) {
