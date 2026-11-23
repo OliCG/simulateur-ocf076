@@ -299,7 +299,7 @@
       if (p1 && p1.criteres["Exercice incomplet"] && num(p1.criteres["Exercice incomplet"].res) > 0) {
         notes[n] = (notes[n] ? notes[n] + " " : "") + "Premier passage incomplet.";
       }
-      seqData[n] = { p1, p2, note: notes[n] || "", lancements: list.length };
+      seqData[n] = { p1, p2, all: list, note: notes[n] || "", lancements: list.length };
     });
     const conso = {};
     ["2", "3", "4", "5", "6"].forEach((n) => {
@@ -366,7 +366,7 @@
     };
 
     // 2. Déroulement
-    const rows = [[H("N°"), H("Séquence"), H("Organisation prévue"), H("Durée prévue"), { text: ["Durée réalisée\n", { text: "1er passage, débriefing, 2e passage", fontSize: 7, bold: false }], style: "th" }]];
+    const rows = [[H("N°"), H("Séquence"), H("Organisation prévue"), H("Durée prévue"), H("Durée réalisée")]];
     let totReal = 0;
     SEQUENCES.forEach((q) => {
       if (q.n.startsWith("D")) {
@@ -375,10 +375,9 @@
         return;
       }
       const s = M.seqData[q.n];
-      const d1 = s.p1 ? s.p1.duree : null, d2 = s.p2 ? s.p2.duree : null;
-      const auto = d2 != null ? (q.auto || 0) : 0;
-      const r = (d1 || 0) + auto + (d2 || 0); totReal += r;
-      const dr = d1 == null ? "________" : d2 == null ? `${d1} min (1 passage)` : auto ? `${d1} + ${auto} + ${d2} = ${r} min` : `${d1} + ${d2} = ${r} min`;
+      const sim = (s.all || []).reduce((a, e) => a + (e.duree || 0), 0);
+      const r = sim > 0 ? sim + (q.auto || 0) : 0; totReal += r;
+      const dr = sim > 0 ? `${r} min` : "________";
       rows.push([C(q.n), q.titre, q.org, C(q.prevu + " min"), C(dr)]);
     });
     const debTot = (S.debrief[0] || 0) + (S.debrief[1] || 0);
